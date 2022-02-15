@@ -8,14 +8,14 @@ typedef void RatingChangeCallback(double rating);
 class SmoothStarRating extends StatelessWidget {
   final int starCount;
   final double rating;
-  final RatingChangeCallback onRatingChanged;
-  final Color color;
-  final Color borderColor;
+  final RatingChangeCallback? onRatingChanged;
+  final Color? color;
+  final Color? borderColor;
   final double size;
   final bool allowHalfRating;
-  final IconData filledIconData;
-  final IconData halfFilledIconData;
-  final IconData
+  final IconData? filledIconData;
+  final IconData? halfFilledIconData;
+  final IconData?
       defaultIconData; //this is needed only when having fullRatedIconData && halfRatedIconData
   final double spacing;
   SmoothStarRating({
@@ -59,10 +59,10 @@ class SmoothStarRating extends StatelessWidget {
 
     return new GestureDetector(
       onTap: () {
-        if (this.onRatingChanged != null) onRatingChanged(index + 1.0);
+        onRatingChanged?.call(index + 1.0);
       },
       onHorizontalDragUpdate: (dragDetails) {
-        RenderBox box = context.findRenderObject();
+        RenderBox box = context.findRenderObject()! as RenderBox;
         var _pos = box.globalToLocal(dragDetails.globalPosition);
         var i = _pos.dx / size;
         var newRating = allowHalfRating ? i : i.round().toDouble();
@@ -72,7 +72,7 @@ class SmoothStarRating extends StatelessWidget {
         if (newRating < 0) {
           newRating = 0.0;
         }
-        if (this.onRatingChanged != null) onRatingChanged(newRating);
+        onRatingChanged?.call(newRating);
       },
       child: icon,
     );
